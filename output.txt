@@ -1,152 +1,157 @@
 Net 1:
-IP Address:192.168.1.0/25
-Mask:255.255.255.128/25
-Range:192.168.1.0/25 - 192.168.1.127/25
+Connection:  PC1 - B1
+IP Address: 192.168.1.0/25
+Mask: 255.255.255.128/25
+Range: 192.168.1.0/25 - 192.168.1.127/25
 
 Net 2:
-IP Address:192.168.1.128/26
-Mask:255.255.255.192/26
-Range:192.168.1.128/26 - 192.168.1.191/26
+Connection:  HQ - PC2
+IP Address: 192.168.1.128/26
+Mask: 255.255.255.192/26
+Range: 192.168.1.128/26 - 192.168.1.191/26
 
 Net 3:
-IP Address:192.168.1.192/27
-Mask:255.255.255.224/27
-Range:192.168.1.192/27 - 192.168.1.223/27
+Connection:  B2 - PC3
+IP Address: 192.168.1.192/27
+Mask: 255.255.255.224/27
+Range: 192.168.1.192/27 - 192.168.1.223/27
 
 Net 4:
-IP Address:192.168.1.224/30
-Mask:255.255.255.252/30
-Range:192.168.1.224/30 - 192.168.1.227/30
+Connection:  HQ - B1
+IP Address: 192.168.1.224/30
+Mask: 255.255.255.252/30
+Range: 192.168.1.224/30 - 192.168.1.227/30
 
 Net 5:
-IP Address:192.168.1.228/30
-Mask:255.255.255.252/30
-Range:192.168.1.228/30 - 192.168.1.231/30
+Connection:  HQ - B2
+IP Address: 192.168.1.228/30
+Mask: 255.255.255.252/30
+Range: 192.168.1.228/30 - 192.168.1.231/30
 
 
 Addressing Table:
-Device              Interface           IP Address          Submask             Default Gateway     
-R2                  se0/2/0             192.168.1.229/30    255.255.255.252/30  N/A                 
-                    fa0/0               192.168.1.193/27    255.255.255.224/27  N/A                 
+Device         Interface      Connected Device    IP Address          Submask             Default Gateway     
+B2             se0/2/0        HQ                  192.168.1.229/30    255.255.255.252/30  N/A                 
+               fa0/0          PC3                 192.168.1.193/27    255.255.255.224/27  N/A                 
 
-R0                  se0/2/0             192.168.1.225/30    255.255.255.252/30  N/A                 
-                    se0/2/1             192.168.1.230/30    255.255.255.252/30  N/A                 
-                    fa0/0               192.168.1.129/26    255.255.255.192/26  N/A                 
+B1             se0/2/0        HQ                  192.168.1.225/30    255.255.255.252/30  N/A                 
+               fa0/0          PC1                 192.168.1.1/25      255.255.255.128/25  N/A                 
 
-R1                  se0/2/0             192.168.1.226/30    255.255.255.252/30  N/A                 
-                    fa0/0               192.168.1.1/25      255.255.255.128/25  N/A                 
+HQ             se0/2/0        B1                  192.168.1.226/30    255.255.255.252/30  N/A                 
+               se0/2/1        B2                  192.168.1.230/30    255.255.255.252/30  N/A                 
+               fa0/0          PC2                 192.168.1.129/26    255.255.255.192/26  N/A                 
 
-PC2                 fa0/0               192.168.1.194/27    255.255.255.224/27  192.168.1.193/27    
+PC3            fa0/0          B2                  192.168.1.194/27    255.255.255.224/27  192.168.1.193/27    
 
-PC0                 fa0/0               192.168.1.2/25      255.255.255.128/25  192.168.1.1/25      
+PC1            fa0/0          B1                  192.168.1.2/25      255.255.255.128/25  192.168.1.1/25      
 
-PC1                 fa0/0               192.168.1.130/26    255.255.255.192/26  192.168.1.129/26    
+PC2            fa0/0          HQ                  192.168.1.130/26    255.255.255.192/26  192.168.1.129/26    
 
 
 Commands for router configuration with it's own networks:
-For Router - R2:
+For Router - B2:
 No
 enable
 config terminal
 no ip domain-lookup
 interface se0/2/0
-ip address 192.168.1.229/30 255.255.255.252/30
+ip address 192.168.1.229 255.255.255.252
 no shutdown
 exit
 interface fa0/0
-ip address 192.168.1.193/27 255.255.255.252/30
+ip address 192.168.1.193 255.255.255.252
 no shutdown
 exit
 
-For Router - R0:
+For Router - B1:
 No
 enable
 config terminal
 no ip domain-lookup
 interface se0/2/0
-ip address 192.168.1.225/30 255.255.255.252/30
+ip address 192.168.1.225 255.255.255.252
+no shutdown
+exit
+interface fa0/0
+ip address 192.168.1.1 255.255.255.252
+no shutdown
+exit
+
+For Router - HQ:
+No
+enable
+config terminal
+no ip domain-lookup
+interface se0/2/0
+ip address 192.168.1.226 255.255.255.252
 no shutdown
 exit
 interface se0/2/1
-ip address 192.168.1.230/30 255.255.255.252/30
+ip address 192.168.1.230 255.255.255.252
 no shutdown
 exit
 interface fa0/0
-ip address 192.168.1.129/26 255.255.255.252/30
-no shutdown
-exit
-
-For Router - R1:
-No
-enable
-config terminal
-no ip domain-lookup
-interface se0/2/0
-ip address 192.168.1.226/30 255.255.255.252/30
-no shutdown
-exit
-interface fa0/0
-ip address 192.168.1.1/25 255.255.255.252/30
+ip address 192.168.1.129 255.255.255.252
 no shutdown
 exit
 
 Commands for router configuration with other networks:
-For Router-R2:
+For Router - B2:
 enable
 config terminal
 Conn. with Net 1:
-ip route 192.168.1.0/25 255.255.255.128/25 192.168.1.226/30
+ip route 192.168.1.0 255.255.255.128 192.168.1.225
 Conn. with Net 2:
-ip route 192.168.1.128/26 255.255.255.192/26 192.168.1.230/30
+ip route 192.168.1.128 255.255.255.192 192.168.1.230
 Conn. with Net 4:
-ip route 192.168.1.224/30 255.255.255.252/30 192.168.1.230/30
+ip route 192.168.1.224 255.255.255.252 192.168.1.230
 exit
 
-For Router-R0:
-enable
-config terminal
-Conn. with Net 1:
-ip route 192.168.1.0/25 255.255.255.128/25 192.168.1.226/30
-Conn. with Net 3:
-ip route 192.168.1.192/27 255.255.255.224/27 192.168.1.229/30
-exit
-
-For Router-R1:
+For Router - B1:
 enable
 config terminal
 Conn. with Net 2:
-ip route 192.168.1.128/26 255.255.255.192/26 192.168.1.225/30
+ip route 192.168.1.128 255.255.255.192 192.168.1.226
 Conn. with Net 3:
-ip route 192.168.1.192/27 255.255.255.224/27 192.168.1.229/30
+ip route 192.168.1.192 255.255.255.224 192.168.1.229
 Conn. with Net 5:
-ip route 192.168.1.228/30 255.255.255.252/30 192.168.1.225/30
+ip route 192.168.1.228 255.255.255.252 192.168.1.226
+exit
+
+For Router - HQ:
+enable
+config terminal
+Conn. with Net 1:
+ip route 192.168.1.0 255.255.255.128 192.168.1.225
+Conn. with Net 3:
+ip route 192.168.1.192 255.255.255.224 192.168.1.229
 exit
 --------------------------------------------------------------
 
 Commands for router configuration with other networks
 Using RIP (Routing Information Protocol):
-For Router-R2:
+For Router - B2:
 router rip
-network 192.168.1.0/25
-network 192.168.1.128/26
-network 192.168.1.224/30
+network 192.168.1.0
+network 192.168.1.128
+network 192.168.1.224
 exit
 exit
 copy run start
 
-For Router-R0:
+For Router - B1:
 router rip
-network 192.168.1.0/25
-network 192.168.1.192/27
+network 192.168.1.128
+network 192.168.1.192
+network 192.168.1.228
 exit
 exit
 copy run start
 
-For Router-R1:
+For Router - HQ:
 router rip
-network 192.168.1.128/26
-network 192.168.1.192/27
-network 192.168.1.228/30
+network 192.168.1.0
+network 192.168.1.192
 exit
 exit
 copy run start

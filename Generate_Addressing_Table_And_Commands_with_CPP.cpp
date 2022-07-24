@@ -21,6 +21,10 @@ public:
     {
         return to_string(netId1) + "." + to_string(netId2) + "." + to_string(netId3) + "." + to_string(hostId) + "/" + to_string(CIDRPrefix);
     }
+    string to_str_without_prefix()
+    {
+        return to_string(netId1) + "." + to_string(netId2) + "." + to_string(netId3) + "." + to_string(hostId);
+    }
     void display()
     {
         cout << netId1 << "." << netId2 << "." << netId3 << "." << hostId << "/" << CIDRPrefix << endl;
@@ -377,9 +381,10 @@ int main()
         netMerged[i].curAvailableAddress = netMerged[i].ipAddress;
         netMerged[i].name = "Net " + to_string(i + 1);
         cout << netMerged[i].name << ":" << endl;
-        cout << "IP Address:" << netMerged[i].ipAddress.to_str() << endl;
-        cout << "Mask:" << netMerged[i].mask.to_str() << endl;
-        cout << "Range:" << netMerged[i].rangeStarting.to_str() << " - " << netMerged[i].rangeEnding.to_str() << endl;
+        cout<<"Connection:  "<<netMerged[i].device1.name<<" - "<<netMerged[i].device2.name<<endl;
+        cout << "IP Address: " << netMerged[i].ipAddress.to_str() << endl;
+        cout << "Mask: " << netMerged[i].mask.to_str() << endl;
+        cout << "Range: " << netMerged[i].rangeStarting.to_str() << " - " << netMerged[i].rangeEnding.to_str() << endl;
         cout << endl;
     }
 
@@ -439,7 +444,6 @@ int main()
                                         break;
                                     }
                                 }
-                                cout << uniqueDeviceVec[l].name << " " << interface.defaultGateway.to_str() << endl;
                                 break;
                             }
                         }
@@ -526,13 +530,13 @@ int main()
             for (int j = 0; j < dev.serial.size(); j++)
             {
                 cout << "interface " << dev.serial[j].name << endl;
-                cout << "ip address " << dev.serial[j].ipAddress.to_str() << " " << dev.serial[j].subMask.to_str() << endl;
+                cout << "ip address " << dev.serial[j].ipAddress.to_str_without_prefix() << " " << dev.serial[j].subMask.to_str_without_prefix() << endl;
                 cout << "no shutdown\nexit" << endl;
             }
             for (int j = 0; j < dev.fastEthernet.size(); j++)
             {
                 cout << "interface " << dev.fastEthernet[j].name << endl;
-                cout << "ip address " << dev.fastEthernet[j].ipAddress.to_str() << " " << dev.serial[j].subMask.to_str() << endl;
+                cout << "ip address " << dev.fastEthernet[j].ipAddress.to_str_without_prefix() << " " << dev.serial[j].subMask.to_str_without_prefix() << endl;
                 cout << "no shutdown\nexit" << endl;
             }
         }
@@ -561,17 +565,17 @@ int main()
             continue;
         else
         {
-            cout << "\nFor Router-" << dev.name << ":" << endl;
-            commandsForRIPProtocolStr = commandsForRIPProtocolStr + "\nFor Router-" + dev.name + ":\n" + "router rip\n";
+            cout << "\nFor Router - " << dev.name << ":" << endl;
+            commandsForRIPProtocolStr = commandsForRIPProtocolStr + "\nFor Router - " + dev.name + ":\n" + "router rip\n";
             cout << "enable\nconfig terminal\n";
             for (int j = 0; j < netMerged.size(); j++)
             {
                 //skipping own networks 
                 if (netMerged[j].device1.name == dev.name || netMerged[j].device2.name == dev.name)
                     continue;
-                commandsForRIPProtocolStr = commandsForRIPProtocolStr + "network " + netMerged[j].ipAddress.to_str() + "\n";
+                commandsForRIPProtocolStr = commandsForRIPProtocolStr + "network " + netMerged[j].ipAddress.to_str_without_prefix() + "\n";
                 cout << "Conn. with " << netMerged[j].name << ":" << endl;
-                cout << "ip route " << netMerged[j].ipAddress.to_str() << " " << netMerged[j].mask.to_str() << " ";
+                cout << "ip route " << netMerged[j].ipAddress.to_str_without_prefix() << " " << netMerged[j].mask.to_str_without_prefix() << " ";
                 Device destDev = Device("No device found");
                 Device destDevPrev = Device("No Prev device found");
                 visitedNet.clear();
@@ -581,7 +585,7 @@ int main()
                 {
                     if (devConVec[k].device1 == destDev && devConVec[k].device2 == destDevPrev)
                     {
-                        cout << devConVec[k].interface.ipAddress.to_str();
+                        cout << devConVec[k].interface.ipAddress.to_str_without_prefix();
                         break;
                     }
                 }
