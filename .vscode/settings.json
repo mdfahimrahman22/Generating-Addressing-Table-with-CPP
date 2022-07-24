@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.html": "django-html",
+        ".env": "env",
+        "iostream": "cpp"
+    }
+}

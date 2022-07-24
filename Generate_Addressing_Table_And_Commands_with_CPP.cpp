@@ -30,11 +30,13 @@ public:
         cout << netId1 << "." << netId2 << "." << netId3 << "." << hostId << "/" << CIDRPrefix;
     }
 };
+class Device;
 class Interface
 {
 public:
     string name;
     NetworkAddress ipAddress, subMask, defaultGateway;
+    Device *connectedDevice;
 
     Interface() {}
     Interface(string _name)
@@ -136,8 +138,9 @@ void displayAddressingTable(vector<Device> devices)
 {
 
     int setwVal = 20;
-    cout << left << setw(setwVal) << "Device";
-    cout << left << setw(setwVal) << "Interface";
+    cout << left << setw(setwVal-5) << "Device";
+    cout << left << setw(setwVal-5) << "Interface";
+    cout << left << setw(setwVal) << "Connected Device";
     cout << left << setw(setwVal) << "IP Address";
     cout << left << setw(setwVal) << "Submask";
     cout << left << setw(setwVal) << "Default Gateway";
@@ -148,10 +151,11 @@ void displayAddressingTable(vector<Device> devices)
         for (int j = 0; j < dev.serial.size(); j++)
         {
             if (j == 0)
-                cout << left << setw(setwVal) << dev.name;
+                cout << left << setw(setwVal-5) << dev.name;
             else
-                cout << left << setw(setwVal) << "";
-            cout << left << setw(setwVal) << dev.serial[j].name;
+                cout << left << setw(setwVal-5) << "";
+            cout << left << setw(setwVal-5) << dev.serial[j].name;
+            cout << left << setw(setwVal) << dev.serial[j].connectedDevice->name;
             cout << left << setw(setwVal) << dev.serial[j].ipAddress.to_str();
             cout << left << setw(setwVal) << dev.serial[j].subMask.to_str();
 
@@ -163,10 +167,11 @@ void displayAddressingTable(vector<Device> devices)
         for (int j = 0; j < dev.fastEthernet.size(); j++)
         {
             if (j == 0 and dev.serial.size() == 0)
-                cout << left << setw(setwVal) << dev.name;
+                cout << left << setw(setwVal-5) << dev.name;
             else
-                cout << left << setw(setwVal) << "";
-            cout << left << setw(setwVal) << dev.fastEthernet[j].name;
+                cout << left << setw(setwVal-5) << "";
+            cout << left << setw(setwVal-5) << dev.fastEthernet[j].name;
+            cout << left << setw(setwVal) << dev.fastEthernet[j].connectedDevice->name;
             cout << left << setw(setwVal) << dev.fastEthernet[j].ipAddress.to_str();
             cout << left << setw(setwVal) << dev.fastEthernet[j].subMask.to_str();
 
@@ -439,6 +444,7 @@ int main()
                             }
                         }
                     }
+                    interface.connectedDevice = &netMerged[j].device2;
                     devConVec.push_back(DeviceConnection(uniqueDeviceVec[i], netMerged[j].device2, interface));
                     uniqueDeviceVec[i].fastEthernet.push_back(interface);
                 }
@@ -448,6 +454,7 @@ int main()
                     netMerged[j].curAvailableAddress = addNetId(netMerged[j].curAvailableAddress, 1);
                     interface.ipAddress = netMerged[j].curAvailableAddress;
                     interface.subMask = netMerged[j].mask;
+                    interface.connectedDevice = &netMerged[j].device2;
                     devConVec.push_back(DeviceConnection(uniqueDeviceVec[i], netMerged[j].device2, interface));
                     uniqueDeviceVec[i].serial.push_back(interface);
                 }
@@ -482,6 +489,7 @@ int main()
                             }
                         }
                     }
+                    interface.connectedDevice = &netMerged[j].device1;
                     devConVec.push_back(DeviceConnection(uniqueDeviceVec[i], netMerged[j].device1, interface));
                     uniqueDeviceVec[i].fastEthernet.push_back(interface);
                 }
@@ -491,6 +499,7 @@ int main()
                     netMerged[j].curAvailableAddress = addNetId(netMerged[j].curAvailableAddress, 1);
                     interface.ipAddress = netMerged[j].curAvailableAddress;
                     interface.subMask = netMerged[j].mask;
+                    interface.connectedDevice = &netMerged[j].device1;
                     devConVec.push_back(DeviceConnection(uniqueDeviceVec[i], netMerged[j].device1, interface));
                     uniqueDeviceVec[i].serial.push_back(interface);
                 }
@@ -557,17 +566,16 @@ int main()
             cout << "enable\nconfig terminal\n";
             for (int j = 0; j < netMerged.size(); j++)
             {
+                //skipping own networks 
                 if (netMerged[j].device1.name == dev.name || netMerged[j].device2.name == dev.name)
                     continue;
-                commandsForRIPProtocolStr = commandsForRIPProtocolStr + "network " + netMerged[j].ipAddress.to_str()+"\n";
+                commandsForRIPProtocolStr = commandsForRIPProtocolStr + "network " + netMerged[j].ipAddress.to_str() + "\n";
                 cout << "Conn. with " << netMerged[j].name << ":" << endl;
                 cout << "ip route " << netMerged[j].ipAddress.to_str() << " " << netMerged[j].mask.to_str() << " ";
                 Device destDev = Device("No device found");
                 Device destDevPrev = Device("No Prev device found");
                 visitedNet.clear();
                 dfs(devNetMap, dev, destDev, destDevPrev, netMerged[j]);
-                // cout << "Entry point prev:" << destDevPrev.name << endl;
-                // cout << "Entry point:" << destDev.name << endl;
 
                 for (int k = 0; k < devConVec.size(); k++)
                 {
@@ -579,7 +587,7 @@ int main()
                 }
                 cout << endl;
             }
-            commandsForRIPProtocolStr=commandsForRIPProtocolStr+"exit\nexit\ncopy run start\n";
+            commandsForRIPProtocolStr = commandsForRIPProtocolStr + "exit\nexit\ncopy run start\n";
             cout << "exit" << endl;
         }
     }
