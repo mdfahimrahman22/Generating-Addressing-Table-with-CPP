@@ -566,7 +566,7 @@ int main()
         else
         {
             cout << "\nFor Router - " << dev.name << ":" << endl;
-            commandsForRIPProtocolStr = commandsForRIPProtocolStr + "\nFor Router - " + dev.name + ":\n" + "router rip\n";
+            commandsForRIPProtocolStr = commandsForRIPProtocolStr + "\nFor Router - " + dev.name + ":\n" + "router rip\nversion 2\nno auto summery\n";
             cout << "enable\nconfig terminal\n";
             for (int j = 0; j < netMerged.size(); j++)
             {

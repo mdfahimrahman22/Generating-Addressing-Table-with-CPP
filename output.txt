@@ -132,6 +132,8 @@ Commands for router configuration with other networks
 Using RIP (Routing Information Protocol):
 For Router - B2:
 router rip
+version 2
+no auto summery
 network 192.168.1.0
 network 192.168.1.128
 network 192.168.1.224
@@ -141,6 +143,8 @@ copy run start
 
 For Router - B1:
 router rip
+version 2
+no auto summery
 network 192.168.1.128
 network 192.168.1.192
 network 192.168.1.228
@@ -150,6 +154,8 @@ copy run start
 
 For Router - HQ:
 router rip
+version 2
+no auto summery
 network 192.168.1.0
 network 192.168.1.192
 exit
