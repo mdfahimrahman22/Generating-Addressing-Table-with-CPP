@@ -543,7 +543,7 @@ int main()
         {
             uniqueRouters.push_back(uniqueDeviceVec[i]);
             cout << "\nFor Router - " << dev.name << ":" << endl;
-            cout << "No\nenable\nconfig terminal\nno ip domain-lookup\n";
+            cout << "no\nenable\nconfig terminal\nno ip domain-lookup\n";
             for (int j = 0; j < dev.serial.size(); j++)
             {
                 cout << "interface " << dev.serial[j].name << endl;
@@ -583,14 +583,14 @@ int main()
         else
         {
             cout << "\nFor Router - " << dev.name << ":" << endl;
-            commandsForRIPProtocolStr = commandsForRIPProtocolStr + "\nFor Router - " + dev.name + ":\n" + "router rip\nversion 2\n";
+            commandsForRIPProtocolStr = commandsForRIPProtocolStr + "\nFor Router - " + dev.name + ":\n" + "no\nenable\nconfig terminal\nrouter rip\nversion 2\nno auto summery\n";
             cout << "enable\nconfig terminal\n";
             for (int j = 0; j < netMerged.size(); j++)
             {
                 // skipping own networks
                 if (netMerged[j].device1.name == dev.name || netMerged[j].device2.name == dev.name)
                 {
-                    commandsForRIPProtocolStr = commandsForRIPProtocolStr + "network " + netMerged[j].ipAddress.to_str_without_prefix() + "\nno auto summery\n";
+                    commandsForRIPProtocolStr = commandsForRIPProtocolStr + "network " + netMerged[j].ipAddress.to_str_without_prefix() + "\n";
                     continue;
                 }
 

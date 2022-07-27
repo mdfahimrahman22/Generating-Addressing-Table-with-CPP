@@ -1,288 +1,171 @@
 Net 1:
-Connection:  R0 - PC0
-IP Address: 172.28.0.0/24
-Mask: 255.255.255.0/24
-Range: 172.28.0.0/24 - 172.28.0.255/24
+Connection:  B1 - PC1
+IP Address: 192.168.1.0/25
+Mask: 255.255.255.128/25
+Range: 192.168.1.0/25 - 192.168.1.127/25
 
 Net 2:
-Connection:  R3 - PC1
-IP Address: 172.28.1.0/25
-Mask: 255.255.255.128/25
-Range: 172.28.1.0/25 - 172.28.1.127/25
+Connection:  HQ - PC2
+IP Address: 192.168.1.128/26
+Mask: 255.255.255.192/26
+Range: 192.168.1.128/26 - 192.168.1.191/26
 
 Net 3:
-Connection:  R1 - PC3
-IP Address: 172.28.1.128/27
+Connection:  B2 - PC3
+IP Address: 192.168.1.192/27
 Mask: 255.255.255.224/27
-Range: 172.28.1.128/27 - 172.28.1.159/27
+Range: 192.168.1.192/27 - 192.168.1.223/27
 
 Net 4:
-Connection:  R2 - PC2
-IP Address: 172.28.1.160/28
-Mask: 255.255.255.240/28
-Range: 172.28.1.160/28 - 172.28.1.175/28
+Connection:  HQ - B1
+IP Address: 192.168.1.224/30
+Mask: 255.255.255.252/30
+Range: 192.168.1.224/30 - 192.168.1.227/30
 
 Net 5:
-Connection:  R1 - R0
-IP Address: 172.28.1.176/30
+Connection:  HQ - B2
+IP Address: 192.168.1.228/30
 Mask: 255.255.255.252/30
-Range: 172.28.1.176/30 - 172.28.1.179/30
-
-Net 6:
-Connection:  R1 - R2
-IP Address: 172.28.1.180/30
-Mask: 255.255.255.252/30
-Range: 172.28.1.180/30 - 172.28.1.183/30
-
-Net 7:
-Connection:  R0 - R2
-IP Address: 172.28.1.184/30
-Mask: 255.255.255.252/30
-Range: 172.28.1.184/30 - 172.28.1.187/30
-
-Net 8:
-Connection:  R0 - R3
-IP Address: 172.28.1.188/30
-Mask: 255.255.255.252/30
-Range: 172.28.1.188/30 - 172.28.1.191/30
-
-Net 9:
-Connection:  R2 - R3
-IP Address: 172.28.1.192/30
-Mask: 255.255.255.252/30
-Range: 172.28.1.192/30 - 172.28.1.195/30
+Range: 192.168.1.228/30 - 192.168.1.231/30
 
 
 Addressing Table:
 Device         Interface      Connected Device    IP Address          Submask             Default Gateway     
-R1             se0/0/0        R0                  172.28.1.177/30     255.255.255.252/30  N/A                 
-               se0/0/1        R2                  172.28.1.181/30     255.255.255.252/30  N/A                 
-               fa0/0          PC3                 172.28.1.129/27     255.255.255.224/27  N/A                 
+B2             se0/0/0        HQ                  192.168.1.229/30    255.255.255.252/30  N/A                 
+               fa0/0          PC3                 192.168.1.193/27    255.255.255.224/27  N/A                 
 
-R0             se0/0/0        R1                  172.28.1.178/30     255.255.255.252/30  N/A                 
-               se0/0/1        R2                  172.28.1.185/30     255.255.255.252/30  N/A                 
-               se0/1/0        R3                  172.28.1.189/30     255.255.255.252/30  N/A                 
-               fa0/0          PC0                 172.28.0.1/24       255.255.255.0/24    N/A                 
+B1             se0/0/0        HQ                  192.168.1.225/30    255.255.255.252/30  N/A                 
+               fa0/0          PC1                 192.168.1.1/25      255.255.255.128/25  N/A                 
 
-R3             se0/0/0        R0                  172.28.1.190/30     255.255.255.252/30  N/A                 
-               se0/0/1        R2                  172.28.1.193/30     255.255.255.252/30  N/A                 
-               fa0/0          PC1                 172.28.1.1/25       255.255.255.128/25  N/A                 
+HQ             se0/0/0        B1                  192.168.1.226/30    255.255.255.252/30  N/A                 
+               se0/0/1        B2                  192.168.1.230/30    255.255.255.252/30  N/A                 
+               fa0/0          PC2                 192.168.1.129/26    255.255.255.192/26  N/A                 
 
-R2             se0/0/0        R1                  172.28.1.182/30     255.255.255.252/30  N/A                 
-               se0/0/1        R0                  172.28.1.186/30     255.255.255.252/30  N/A                 
-               se0/1/0        R3                  172.28.1.194/30     255.255.255.252/30  N/A                 
-               fa0/0          PC2                 172.28.1.161/28     255.255.255.240/28  N/A                 
+PC3            fa0/0          B2                  192.168.1.194/27    255.255.255.224/27  192.168.1.193/27    
 
-PC2            fa0/0          R2                  172.28.1.162/28     255.255.255.240/28  172.28.1.161/28     
+PC1            fa0/0          B1                  192.168.1.2/25      255.255.255.128/25  192.168.1.1/25      
 
-PC1            fa0/0          R3                  172.28.1.2/25       255.255.255.128/25  172.28.1.1/25       
-
-PC0            fa0/0          R0                  172.28.0.2/24       255.255.255.0/24    172.28.0.1/24       
-
-PC3            fa0/0          R1                  172.28.1.130/27     255.255.255.224/27  172.28.1.129/27     
+PC2            fa0/0          HQ                  192.168.1.130/26    255.255.255.192/26  192.168.1.129/26    
 
 
 Commands for router configuration with it's own networks:
-For Router - R1:
+For Router - B2:
 No
 enable
 config terminal
 no ip domain-lookup
 interface se0/0/0
-ip address 172.28.1.177 255.255.255.252
-no shutdown
-exit
-interface se0/0/1
-ip address 172.28.1.181 255.255.255.252
+ip address 192.168.1.229 255.255.255.252
 no shutdown
 exit
 interface fa0/0
-ip address 172.28.1.129 255.255.255.252
+ip address 192.168.1.193 255.255.255.252
 no shutdown
 exit
 
-For Router - R0:
+For Router - B1:
 No
 enable
 config terminal
 no ip domain-lookup
 interface se0/0/0
-ip address 172.28.1.178 255.255.255.252
-no shutdown
-exit
-interface se0/0/1
-ip address 172.28.1.185 255.255.255.252
-no shutdown
-exit
-interface se0/1/0
-ip address 172.28.1.189 255.255.255.252
+ip address 192.168.1.225 255.255.255.252
 no shutdown
 exit
 interface fa0/0
-ip address 172.28.0.1 255.255.255.252
+ip address 192.168.1.1 255.255.255.252
 no shutdown
 exit
 
-For Router - R3:
+For Router - HQ:
 No
 enable
 config terminal
 no ip domain-lookup
 interface se0/0/0
-ip address 172.28.1.190 255.255.255.252
+ip address 192.168.1.226 255.255.255.252
 no shutdown
 exit
 interface se0/0/1
-ip address 172.28.1.193 255.255.255.252
+ip address 192.168.1.230 255.255.255.252
 no shutdown
 exit
 interface fa0/0
-ip address 172.28.1.1 255.255.255.252
-no shutdown
-exit
-
-For Router - R2:
-No
-enable
-config terminal
-no ip domain-lookup
-interface se0/0/0
-ip address 172.28.1.182 255.255.255.252
-no shutdown
-exit
-interface se0/0/1
-ip address 172.28.1.186 255.255.255.252
-no shutdown
-exit
-interface se0/1/0
-ip address 172.28.1.194 255.255.255.252
-no shutdown
-exit
-interface fa0/0
-ip address 172.28.1.161 255.255.255.252
+ip address 192.168.1.129 255.255.255.252
 no shutdown
 exit
 
 Commands for router configuration with other networks:
-For Router - R1:
+For Router - B2:
 enable
 config terminal
 Conn. with Net 1:
-ip route 172.28.0.0 255.255.255.0 172.28.1.178
+ip route 192.168.1.0 255.255.255.128 192.168.1.225
 Conn. with Net 2:
-ip route 172.28.1.0 255.255.255.128 172.28.1.193
+ip route 192.168.1.128 255.255.255.192 192.168.1.230
 Conn. with Net 4:
-ip route 172.28.1.160 255.255.255.240 172.28.1.186
-Conn. with Net 7:
-ip route 172.28.1.184 255.255.255.252 172.28.1.178
-Conn. with Net 8:
-ip route 172.28.1.188 255.255.255.252 172.28.1.178
-Conn. with Net 9:
-ip route 172.28.1.192 255.255.255.252 172.28.1.186
+ip route 192.168.1.224 255.255.255.252 192.168.1.230
 exit
 
-For Router - R0:
+For Router - B1:
 enable
 config terminal
 Conn. with Net 2:
-ip route 172.28.1.0 255.255.255.128 172.28.1.190
+ip route 192.168.1.128 255.255.255.192 192.168.1.226
 Conn. with Net 3:
-ip route 172.28.1.128 255.255.255.224 172.28.1.177
-Conn. with Net 4:
-ip route 172.28.1.160 255.255.255.240 172.28.1.182
-Conn. with Net 6:
-ip route 172.28.1.180 255.255.255.252 172.28.1.177
-Conn. with Net 9:
-ip route 172.28.1.192 255.255.255.252 172.28.1.182
-exit
-
-For Router - R3:
-enable
-config terminal
-Conn. with Net 1:
-ip route 172.28.0.0 255.255.255.0 172.28.1.189
-Conn. with Net 3:
-ip route 172.28.1.128 255.255.255.224 172.28.1.177
-Conn. with Net 4:
-ip route 172.28.1.160 255.255.255.240 172.28.1.182
+ip route 192.168.1.192 255.255.255.224 192.168.1.229
 Conn. with Net 5:
-ip route 172.28.1.176 255.255.255.252 172.28.1.189
-Conn. with Net 6:
-ip route 172.28.1.180 255.255.255.252 172.28.1.177
-Conn. with Net 7:
-ip route 172.28.1.184 255.255.255.252 172.28.1.189
+ip route 192.168.1.228 255.255.255.252 192.168.1.226
 exit
 
-For Router - R2:
+For Router - HQ:
 enable
 config terminal
 Conn. with Net 1:
-ip route 172.28.0.0 255.255.255.0 172.28.1.178
-Conn. with Net 2:
-ip route 172.28.1.0 255.255.255.128 172.28.1.193
+ip route 192.168.1.0 255.255.255.128 192.168.1.225
 Conn. with Net 3:
-ip route 172.28.1.128 255.255.255.224 172.28.1.181
-Conn. with Net 5:
-ip route 172.28.1.176 255.255.255.252 172.28.1.181
-Conn. with Net 8:
-ip route 172.28.1.188 255.255.255.252 172.28.1.178
+ip route 192.168.1.192 255.255.255.224 192.168.1.229
 exit
 --------------------------------------------------------------
 
 Commands for router configuration with other networks
 Using RIP (Routing Information Protocol):
-For Router - R1:
+For Router - B2:
+no
+enable
+config terminal
 router rip
 version 2
-network 172.28.1.128
 no auto summery
-network 172.28.1.176
-no auto summery
-network 172.28.1.180
-no auto summery
+network 192.168.1.192
+network 192.168.1.228
 exit
 exit
 copy run start
 
-For Router - R0:
+For Router - B1:
+no
+enable
+config terminal
 router rip
 version 2
-network 172.28.0.0
 no auto summery
-network 172.28.1.176
-no auto summery
-network 172.28.1.184
-no auto summery
-network 172.28.1.188
-no auto summery
+network 192.168.1.0
+network 192.168.1.224
 exit
 exit
 copy run start
 
-For Router - R3:
+For Router - HQ:
+no
+enable
+config terminal
 router rip
 version 2
-network 172.28.1.0
 no auto summery
-network 172.28.1.188
-no auto summery
-network 172.28.1.192
-no auto summery
-exit
-exit
-copy run start
-
-For Router - R2:
-router rip
-version 2
-network 172.28.1.160
-no auto summery
-network 172.28.1.180
-no auto summery
-network 172.28.1.184
-no auto summery
-network 172.28.1.192
-no auto summery
+network 192.168.1.128
+network 192.168.1.224
+network 192.168.1.228
 exit
 exit
 copy run start
