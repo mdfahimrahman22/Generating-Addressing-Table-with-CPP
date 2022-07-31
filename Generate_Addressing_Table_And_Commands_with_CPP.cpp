@@ -34,6 +34,14 @@ public:
         cout << netId1 << "." << netId2 << "." << netId3 << "." << hostId << "/" << CIDRPrefix;
     }
 };
+NetworkAddress getWildcardMask(NetworkAddress mask)
+{
+    mask.netId1 = 255 - mask.netId1;
+    mask.netId2 = 255 - mask.netId2;
+    mask.netId3 = 255 - mask.netId3;
+    mask.hostId = 255 - mask.hostId;
+    return mask;
+}
 class Device;
 class Interface
 {
@@ -573,6 +581,7 @@ int main()
         devNetMap.insert(pair<string, vector<Network>>(uniqueRouters[i].name, netsOfRouter));
     }
     string commandsForRIPProtocolStr;
+    string commandsForOSPFStr;
     cout << "\nCommands for router configuration with other networks:";
 
     for (int i = 0; i < uniqueDeviceVec.size(); i++)
@@ -583,7 +592,8 @@ int main()
         else
         {
             cout << "\nFor Router - " << dev.name << ":" << endl;
-            commandsForRIPProtocolStr = commandsForRIPProtocolStr + "\nFor Router - " + dev.name + ":\n" + "no\nenable\nconfig terminal\nrouter rip\nversion 2\nno auto summery\n";
+            commandsForRIPProtocolStr = commandsForRIPProtocolStr + "\nFor Router - " + dev.name + ":\n" + "router rip\nversion 2\nno auto summery\n";
+            commandsForOSPFStr = commandsForOSPFStr + "\nFor Router - " + dev.name + ":\n" + "router ospf 1\n";
             cout << "enable\nconfig terminal\n";
             for (int j = 0; j < netMerged.size(); j++)
             {
@@ -591,10 +601,11 @@ int main()
                 if (netMerged[j].device1.name == dev.name || netMerged[j].device2.name == dev.name)
                 {
                     commandsForRIPProtocolStr = commandsForRIPProtocolStr + "network " + netMerged[j].ipAddress.to_str_without_prefix() + "\n";
+                    commandsForOSPFStr = commandsForOSPFStr + "network " + netMerged[j].ipAddress.to_str_without_prefix() + " " + getWildcardMask(netMerged[j].mask).to_str_without_prefix() + " area 1\n";
                     continue;
                 }
 
-                cout << "Conn. with " << netMerged[j].name << ":" << endl;
+                // cout << "Conn. with " << netMerged[j].name << ":" << endl;
                 cout << "ip route " << netMerged[j].ipAddress.to_str_without_prefix() << " " << netMerged[j].mask.to_str_without_prefix() << " ";
                 Device destDev = Device("No device found");
                 Device destDevPrev = Device("No Prev device found");
@@ -612,13 +623,19 @@ int main()
                 cout << endl;
             }
             commandsForRIPProtocolStr = commandsForRIPProtocolStr + "exit\nexit\ncopy run start\n";
+            commandsForOSPFStr = commandsForOSPFStr + "exit\n";
             cout << "exit" << endl;
         }
     }
 
     cout << "--------------------------------------------------------------" << endl;
 
-    cout << "\nCommands for router configuration with other networks\nUsing RIP (Routing Information Protocol):";
+    cout << "\nRIP(Routing Information Protocol) Commands for router configuration\n(After configuring it's own connection ports)";
     cout << commandsForRIPProtocolStr << endl;
+
+    cout << "--------------------------------------------------------------" << endl;
+
+    cout << "\nOSPF(Open Shortest Path First) Commands for router configuration\n(After configuring it's own connection ports)";
+    cout << commandsForOSPFStr << endl;
     return 0;
 }
