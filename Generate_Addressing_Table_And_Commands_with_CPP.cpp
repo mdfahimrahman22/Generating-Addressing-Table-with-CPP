@@ -582,6 +582,7 @@ int main()
     }
     string commandsForRIPProtocolStr;
     string commandsForOSPFStr;
+    string commandsForEIGRPStr;
     cout << "\nCommands for router configuration with other networks:";
 
     for (int i = 0; i < uniqueDeviceVec.size(); i++)
@@ -593,7 +594,8 @@ int main()
         {
             cout << "\nFor Router - " << dev.name << ":" << endl;
             commandsForRIPProtocolStr = commandsForRIPProtocolStr + "\nFor Router - " + dev.name + ":\n" + "router rip\nversion 2\nno auto summery\n";
-            commandsForOSPFStr = commandsForOSPFStr + "\nFor Router - " + dev.name + ":\n" + "router ospf 1\n";
+            commandsForOSPFStr = commandsForOSPFStr + "\nFor Router - " + dev.name + ":\n" + "router ospf 1\nno auto-summary\n";
+            commandsForEIGRPStr = commandsForEIGRPStr + "\nFor Router - " + dev.name + ":\n" + "router eigrp 1\nno auto-summary\n";
             cout << "enable\nconfig terminal\n";
             for (int j = 0; j < netMerged.size(); j++)
             {
@@ -602,6 +604,7 @@ int main()
                 {
                     commandsForRIPProtocolStr = commandsForRIPProtocolStr + "network " + netMerged[j].ipAddress.to_str_without_prefix() + "\n";
                     commandsForOSPFStr = commandsForOSPFStr + "network " + netMerged[j].ipAddress.to_str_without_prefix() + " " + getWildcardMask(netMerged[j].mask).to_str_without_prefix() + " area 1\n";
+                    commandsForEIGRPStr = commandsForEIGRPStr + "network " + netMerged[j].ipAddress.to_str_without_prefix() + " " + getWildcardMask(netMerged[j].mask).to_str_without_prefix() + "\n";
                     continue;
                 }
 
@@ -637,5 +640,10 @@ int main()
 
     cout << "\nOSPF(Open Shortest Path First) Commands for router configuration\n(After configuring it's own connection ports)";
     cout << commandsForOSPFStr << endl;
+
+    cout << "--------------------------------------------------------------" << endl;
+
+    cout << "\nEIGRP Commands for router configuration\n(After configuring it's own connection ports)";
+    cout << commandsForEIGRPStr << endl;
     return 0;
 }
