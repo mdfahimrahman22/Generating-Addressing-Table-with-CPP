@@ -561,7 +561,7 @@ int main()
             for (int j = 0; j < dev.fastEthernet.size(); j++)
             {
                 cout << "interface " << dev.fastEthernet[j].name << endl;
-                cout << "ip address " << dev.fastEthernet[j].ipAddress.to_str_without_prefix() << " " << dev.serial[j].subMask.to_str_without_prefix() << endl;
+                cout << "ip address " << dev.fastEthernet[j].ipAddress.to_str_without_prefix() << " " << dev.fastEthernet[j].subMask.to_str_without_prefix() << endl;
                 cout << "no shutdown\nexit" << endl;
             }
         }
