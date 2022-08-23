@@ -1,216 +1,153 @@
 Net 1:
-Connection:  R3 - PC2
-IP Address: 192.168.123.0/25
+Connection:  B1 - PC1
+IP Address: 192.168.1.0/25
 Mask: 255.255.255.128/25
-Range: 192.168.123.0/25 - 192.168.123.127/25
+Range: 192.168.1.0/25 - 192.168.1.127/25
 
 Net 2:
-Connection:  R2 - PC0
-IP Address: 192.168.123.128/25
-Mask: 255.255.255.128/25
-Range: 192.168.123.128/25 - 192.168.123.255/25
+Connection:  HQ - PC2
+IP Address: 192.168.1.128/26
+Mask: 255.255.255.192/26
+Range: 192.168.1.128/26 - 192.168.1.191/26
 
 Net 3:
-Connection:  R2 - PC1
-IP Address: 192.168.124.0/27
+Connection:  B2 - PC2
+IP Address: 192.168.1.192/27
 Mask: 255.255.255.224/27
-Range: 192.168.124.0/27 - 192.168.124.31/27
+Range: 192.168.1.192/27 - 192.168.1.223/27
 
 Net 4:
-Connection:  R3 - PC3
-IP Address: 192.168.124.32/28
-Mask: 255.255.255.240/28
-Range: 192.168.124.32/28 - 192.168.124.47/28
+Connection:  B1 - HQ
+IP Address: 192.168.1.224/30
+Mask: 255.255.255.252/30
+Range: 192.168.1.224/30 - 192.168.1.227/30
 
 Net 5:
-Connection:  R0 - R1
-IP Address: 192.168.124.48/30
+Connection:  B2 - HQ
+IP Address: 192.168.1.228/30
 Mask: 255.255.255.252/30
-Range: 192.168.124.48/30 - 192.168.124.51/30
-
-Net 6:
-Connection:  R0 - R2
-IP Address: 192.168.124.52/30
-Mask: 255.255.255.252/30
-Range: 192.168.124.52/30 - 192.168.124.55/30
-
-Net 7:
-Connection:  R1 - R3
-IP Address: 192.168.124.56/30
-Mask: 255.255.255.252/30
-Range: 192.168.124.56/30 - 192.168.124.59/30
+Range: 192.168.1.228/30 - 192.168.1.231/30
 
 
 Addressing Table:
 Device         Interface      Connected Device    IP Address          Submask             Default Gateway     
-R1             se0/0/0        R0                  192.168.124.49/30   255.255.255.252/30  N/A                 
-               se0/0/1        R3                  192.168.124.57/30   255.255.255.252/30  N/A                 
+B2             se0/0/0        HQ                  192.168.1.229/30    255.255.255.252/30  N/A                 
+               fa0/0          PC2                 192.168.1.193/27    255.255.255.224/27  N/A                 
 
-R0             se0/0/0        R1                  192.168.124.50/30   255.255.255.252/30  N/A                 
-               se0/0/1        R2                  192.168.124.53/30   255.255.255.252/30  N/A                 
+HQ             se0/0/0        B1                  192.168.1.225/30    255.255.255.252/30  N/A                 
+               se0/0/1        B2                  192.168.1.230/30    255.255.255.252/30  N/A                 
+               fa0/0          PC2                 192.168.1.129/26    255.255.255.192/26  N/A                 
 
-R3             se0/0/0        R1                  192.168.124.58/30   255.255.255.252/30  N/A                 
-               fa0/0          PC2                 192.168.123.1/25    255.255.255.128/25  N/A                 
-               fa0/1          PC3                 192.168.124.33/28   255.255.255.240/28  N/A                 
+B1             se0/0/0        HQ                  192.168.1.226/30    255.255.255.252/30  N/A                 
+               fa0/0          PC1                 192.168.1.1/25      255.255.255.128/25  N/A                 
 
-R2             se0/0/0        R0                  192.168.124.54/30   255.255.255.252/30  N/A                 
-               fa0/0          PC0                 192.168.123.129/25  255.255.255.128/25  N/A                 
-               fa0/1          PC1                 192.168.124.1/27    255.255.255.224/27  N/A                 
+PC2            fa0/0          HQ                  192.168.1.130/26    255.255.255.192/26  192.168.1.129/26    
+               fa0/1          B2                  192.168.1.194/27    255.255.255.224/27  192.168.1.129/26    
 
-PC2            fa0/0          R3                  192.168.123.2/25    255.255.255.128/25  192.168.123.1/25    
-
-PC0            fa0/0          R2                  192.168.123.130/25  255.255.255.128/25  192.168.123.129/25  
-
-PC1            fa0/0          R2                  192.168.124.2/27    255.255.255.224/27  192.168.123.129/25  
-
-PC3            fa0/0          R3                  192.168.124.34/28   255.255.255.240/28  192.168.123.1/25    
+PC1            fa0/0          B1                  192.168.1.2/25      255.255.255.128/25  192.168.1.1/25      
 
 
 Commands for router configuration with it's own networks:
-For Router - R1:
-no
-enable
-config terminal
-no ip domain-lookup
-interface se0/0/0
-ip address 192.168.124.49 255.255.255.252
-no shutdown
-exit
-interface se0/0/1
-ip address 192.168.124.57 255.255.255.252
-no shutdown
-exit
 
-For Router - R0:
+For Router - B2:
 no
 enable
 config terminal
 no ip domain-lookup
 interface se0/0/0
-ip address 192.168.124.50 255.255.255.252
-no shutdown
-exit
-interface se0/0/1
-ip address 192.168.124.53 255.255.255.252
-no shutdown
-exit
-
-For Router - R3:
-no
-enable
-config terminal
-no ip domain-lookup
-interface se0/0/0
-ip address 192.168.124.58 255.255.255.252
+ip address 192.168.1.229 255.255.255.252
 no shutdown
 exit
 interface fa0/0
-ip address 192.168.123.1 255.255.255.128
-no shutdown
-exit
-interface fa0/1
-ip address 192.168.124.33 255.255.255.240
+ip address 192.168.1.193 255.255.255.224
 no shutdown
 exit
 
-For Router - R2:
+For Router - HQ:
 no
 enable
 config terminal
 no ip domain-lookup
 interface se0/0/0
-ip address 192.168.124.54 255.255.255.252
+ip address 192.168.1.225 255.255.255.252
+no shutdown
+exit
+interface se0/0/1
+ip address 192.168.1.230 255.255.255.252
 no shutdown
 exit
 interface fa0/0
-ip address 192.168.123.129 255.255.255.128
-no shutdown
-exit
-interface fa0/1
-ip address 192.168.124.1 255.255.255.224
+ip address 192.168.1.129 255.255.255.192
 no shutdown
 exit
 
-Commands for router configuration with other networks:
-For Router - R1:
+For Router - B1:
+no
 enable
 config terminal
-ip route 192.168.123.0 255.255.255.128 192.168.124.58
-ip route 192.168.123.128 255.255.255.128 192.168.124.54
-ip route 192.168.124.0 255.255.255.224 192.168.124.54
-ip route 192.168.124.32 255.255.255.240 192.168.124.58
-ip route 192.168.124.52 255.255.255.252 192.168.124.50
+no ip domain-lookup
+interface se0/0/0
+ip address 192.168.1.226 255.255.255.252
+no shutdown
+exit
+interface fa0/0
+ip address 192.168.1.1 255.255.255.128
+no shutdown
 exit
 
-For Router - R0:
-enable
-config terminal
-ip route 192.168.123.0 255.255.255.128 192.168.124.58
-ip route 192.168.123.128 255.255.255.128 192.168.124.54
-ip route 192.168.124.0 255.255.255.224 192.168.124.54
-ip route 192.168.124.32 255.255.255.240 192.168.124.58
-ip route 192.168.124.56 255.255.255.252 192.168.124.49
+--------------------------------------------------------------
+
+Static Routing:
+
+For Router - B2:
+ip route 192.168.1.0 255.255.255.128 192.168.1.226
+ip route 192.168.1.128 255.255.255.192 192.168.1.230
+ip route 192.168.1.224 255.255.255.252 192.168.1.230
 exit
 
-For Router - R3:
-enable
-config terminal
-ip route 192.168.123.128 255.255.255.128 192.168.124.54
-ip route 192.168.124.0 255.255.255.224 192.168.124.54
-ip route 192.168.124.48 255.255.255.252 192.168.124.57
-ip route 192.168.124.52 255.255.255.252 192.168.124.50
+For Router - HQ:
+ip route 192.168.1.0 255.255.255.128 192.168.1.226
+ip route 192.168.1.192 255.255.255.224 192.168.1.229
 exit
 
-For Router - R2:
-enable
-config terminal
-ip route 192.168.123.0 255.255.255.128 192.168.124.58
-ip route 192.168.124.32 255.255.255.240 192.168.124.58
-ip route 192.168.124.48 255.255.255.252 192.168.124.53
-ip route 192.168.124.56 255.255.255.252 192.168.124.49
+For Router - B1:
+ip route 192.168.1.128 255.255.255.192 192.168.1.225
+ip route 192.168.1.192 255.255.255.224 192.168.1.229
+ip route 192.168.1.228 255.255.255.252 192.168.1.225
 exit
+
 --------------------------------------------------------------
 
 RIP(Routing Information Protocol) Commands for router configuration
-(After configuring it's own connection ports)
-For Router - R1:
+(After configuring it's own connection ports):
+
+For Router - B2:
 router rip
 version 2
-no auto summery
-network 192.168.124.48
-network 192.168.124.56
+no autosummery
+network 192.168.1.192
+network 192.168.1.228
 exit
 exit
 copy run start
 
-For Router - R0:
+For Router - HQ:
 router rip
 version 2
-no auto summery
-network 192.168.124.48
-network 192.168.124.52
+no autosummery
+network 192.168.1.128
+network 192.168.1.224
+network 192.168.1.228
 exit
 exit
 copy run start
 
-For Router - R3:
+For Router - B1:
 router rip
 version 2
-no auto summery
-network 192.168.123.0
-network 192.168.124.32
-network 192.168.124.56
-exit
-exit
-copy run start
-
-For Router - R2:
-router rip
-version 2
-no auto summery
-network 192.168.123.128
-network 192.168.124.0
-network 192.168.124.52
+no autosummery
+network 192.168.1.0
+network 192.168.1.224
 exit
 exit
 copy run start
@@ -218,64 +155,48 @@ copy run start
 --------------------------------------------------------------
 
 OSPF(Open Shortest Path First) Commands for router configuration
-(After configuring it's own connection ports)
-For Router - R1:
+(After configuring it's own connection ports):
+
+For Router - B2:
 router ospf 1
-no auto-summary
-network 192.168.124.48 0.0.0.3 area 1
-network 192.168.124.56 0.0.0.3 area 1
+network 192.168.1.192 0.0.0.31 area 1
+network 192.168.1.228 0.0.0.3 area 1
 exit
 
-For Router - R0:
+For Router - HQ:
 router ospf 1
-no auto-summary
-network 192.168.124.48 0.0.0.3 area 1
-network 192.168.124.52 0.0.0.3 area 1
+network 192.168.1.128 0.0.0.63 area 1
+network 192.168.1.224 0.0.0.3 area 1
+network 192.168.1.228 0.0.0.3 area 1
 exit
 
-For Router - R3:
+For Router - B1:
 router ospf 1
-no auto-summary
-network 192.168.123.0 0.0.0.127 area 1
-network 192.168.124.32 0.0.0.15 area 1
-network 192.168.124.56 0.0.0.3 area 1
-exit
-
-For Router - R2:
-router ospf 1
-no auto-summary
-network 192.168.123.128 0.0.0.127 area 1
-network 192.168.124.0 0.0.0.31 area 1
-network 192.168.124.52 0.0.0.3 area 1
+network 192.168.1.0 0.0.0.127 area 1
+network 192.168.1.224 0.0.0.3 area 1
 exit
 
 --------------------------------------------------------------
 
 EIGRP Commands for router configuration
-(After configuring it's own connection ports)
-For Router - R1:
-router eigrp 1
-no auto-summary
-network 192.168.124.48 0.0.0.3
-network 192.168.124.56 0.0.0.3
+(After configuring it's own connection ports):
 
-For Router - R0:
+For Router - B2:
 router eigrp 1
 no auto-summary
-network 192.168.124.48 0.0.0.3
-network 192.168.124.52 0.0.0.3
+network 192.168.1.192 0.0.0.31
+network 192.168.1.228 0.0.0.3
 
-For Router - R3:
+For Router - HQ:
 router eigrp 1
 no auto-summary
-network 192.168.123.0 0.0.0.127
-network 192.168.124.32 0.0.0.15
-network 192.168.124.56 0.0.0.3
+network 192.168.1.128 0.0.0.63
+network 192.168.1.224 0.0.0.3
+network 192.168.1.228 0.0.0.3
 
-For Router - R2:
+For Router - B1:
 router eigrp 1
 no auto-summary
-network 192.168.123.128 0.0.0.127
-network 192.168.124.0 0.0.0.31
-network 192.168.124.52 0.0.0.3
+network 192.168.1.0 0.0.0.127
+network 192.168.1.224 0.0.0.3
 

@@ -540,7 +540,7 @@ int main()
     displayAddressingTable(uniqueDeviceVec);
 
     vector<Device> uniqueRouters;
-    cout << "\nCommands for router configuration with it's own networks:";
+    cout << "\nCommands for router configuration with it's own networks:\n";
 
     for (int i = 0; i < uniqueDeviceVec.size(); i++)
     {
@@ -580,11 +580,14 @@ int main()
         }
         devNetMap.insert(pair<string, vector<Network>>(uniqueRouters[i].name, netsOfRouter));
     }
+    
+
+    cout << "\n--------------------------------------------------------------" << endl;
+    cout << "\nStatic Routing:\n";
+
     string commandsForRIPProtocolStr;
     string commandsForOSPFStr;
     string commandsForEIGRPStr;
-    cout << "\nCommands for router configuration with other networks:";
-
     for (int i = 0; i < uniqueDeviceVec.size(); i++)
     {
         Device dev = uniqueDeviceVec[i];
@@ -593,10 +596,10 @@ int main()
         else
         {
             cout << "\nFor Router - " << dev.name << ":" << endl;
-            commandsForRIPProtocolStr = commandsForRIPProtocolStr + "\nFor Router - " + dev.name + ":\n" + "router rip\nversion 2\nno auto summery\n";
-            commandsForOSPFStr = commandsForOSPFStr + "\nFor Router - " + dev.name + ":\n" + "router ospf 1\nno auto-summary\n";
+            commandsForRIPProtocolStr = commandsForRIPProtocolStr + "\nFor Router - " + dev.name + ":\n" + "router rip\nversion 2\nno auto-summery\n";
+            commandsForOSPFStr = commandsForOSPFStr + "\nFor Router - " + dev.name + ":\n" + "router ospf 1\n";
             commandsForEIGRPStr = commandsForEIGRPStr + "\nFor Router - " + dev.name + ":\n" + "router eigrp 1\nno auto-summary\n";
-            cout << "enable\nconfig terminal\n";
+            // cout << "enable\nconfig terminal\n";
             for (int j = 0; j < netMerged.size(); j++)
             {
                 // skipping own networks
@@ -631,19 +634,19 @@ int main()
         }
     }
 
-    cout << "--------------------------------------------------------------" << endl;
+    cout << "\n--------------------------------------------------------------" << endl;
 
-    cout << "\nRIP(Routing Information Protocol) Commands for router configuration\n(After configuring it's own connection ports)";
+    cout << "\nRIP(Routing Information Protocol) Commands for router configuration\n(After configuring it's own connection ports):\n";
     cout << commandsForRIPProtocolStr << endl;
 
     cout << "--------------------------------------------------------------" << endl;
 
-    cout << "\nOSPF(Open Shortest Path First) Commands for router configuration\n(After configuring it's own connection ports)";
+    cout << "\nOSPF(Open Shortest Path First) Commands for router configuration\n(After configuring it's own connection ports):\n";
     cout << commandsForOSPFStr << endl;
 
     cout << "--------------------------------------------------------------" << endl;
 
-    cout << "\nEIGRP Commands for router configuration\n(After configuring it's own connection ports)";
+    cout << "\nEIGRP Commands for router configuration\n(After configuring it's own connection ports):\n";
     cout << commandsForEIGRPStr << endl;
     return 0;
 }
